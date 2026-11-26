@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Award, Play, Youtube } from 'lucide-react';
+import { Award, ExternalLink, Play, Youtube } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 import { parseVideoUrl } from '../utils/videoEmbed';
+import { isGoogleDriveLink } from '../utils/googleDrive';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
 export default function FeaturedAchievement({ featuredVideoUrl }) {
   const [loaded, setLoaded] = useState(false);
   const reducedMotion = useReducedMotion();
   const videoInfo = parseVideoUrl(featuredVideoUrl);
+  const isDrive = isGoogleDriveLink(featuredVideoUrl || '');
 
   return (
     <section id="achievement" className="py-20 sm:py-24">
@@ -42,9 +44,21 @@ export default function FeaturedAchievement({ featuredVideoUrl }) {
               AI-generated 3D cartoon nursery rhyme produced during my work on the Happy Tots
               network at Prismart, reaching 145,000+ organic views on YouTube.
             </p>
+
+            {isDrive && (
+              <a
+                href={featuredVideoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#E0447C] hover:text-[#F5B85B] transition-colors w-fit min-h-[44px]"
+              >
+                <span>Open on Google Drive</span>
+                <ExternalLink className="w-4 h-4" aria-hidden="true" />
+              </a>
+            )}
           </div>
 
-          {/* Right Lazy YouTube Player */}
+          {/* Right Lazy Video Player */}
           <div className="lg:col-span-7 relative aspect-video bg-gradient-to-br from-[#1C0B24] via-[#7A1248] to-[#0B0710] flex items-center justify-center">
             {loaded && videoInfo?.type === 'iframe' ? (
               <iframe
@@ -58,7 +72,7 @@ export default function FeaturedAchievement({ featuredVideoUrl }) {
               <button
                 type="button"
                 onClick={() => setLoaded(true)}
-                aria-label="Play Aha Tamatar Bade Maze Daar YouTube video"
+                aria-label={`Play Aha Tamatar Bade Maze Daar (${videoInfo.provider})`}
                 className="relative w-full h-full flex flex-col items-center justify-center group"
               >
                 {videoInfo.thumbnailUrl && (
@@ -69,12 +83,14 @@ export default function FeaturedAchievement({ featuredVideoUrl }) {
                     className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-85 transition-opacity"
                   />
                 )}
-                <div className="relative z-10 flex flex-col items-center gap-3">
+                <div className="relative z-10 flex flex-col items-center gap-3 px-4">
                   <span className="w-16 h-16 rounded-full bg-[#E0447C] text-white flex items-center justify-center shadow-xl shadow-[#E0447C]/40 group-hover:scale-110 transition-transform">
                     <Play className="w-7 h-7 fill-current ml-1" />
                   </span>
                   <span className="px-4 py-1.5 rounded-full bg-black/70 text-white font-mono text-xs backdrop-blur-md">
-                    Click to Load YouTube Player
+                    {videoInfo.provider === 'YouTube'
+                      ? 'Click to Load YouTube Player'
+                      : 'Click to Play Video'}
                   </span>
                 </div>
               </button>
@@ -87,7 +103,7 @@ export default function FeaturedAchievement({ featuredVideoUrl }) {
                   145k Views on YouTube
                 </p>
                 <p className="text-xs sm:text-sm text-[#B8AEBF] mt-1 max-w-sm">
-                  YouTube embed link can be added anytime from the Admin Panel (<code className="text-[#F5B85B]">/admin</code>).
+                  Happy Tots Hindi &bull; AI 3D Cartoon Nursery Rhyme
                 </p>
               </div>
             )}

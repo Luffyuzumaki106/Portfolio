@@ -26,7 +26,9 @@ import { THEME_STORAGE_KEY } from './utils/storage';
 gsap.registerPlugin(ScrollTrigger);
 
 function isAdminLocation() {
-  return window.location.pathname.replace(/\/+$/, '') === '/admin';
+  const path = window.location.pathname.replace(/\/+$/, '');
+  const hash = window.location.hash.replace(/\/+$/, '');
+  return path === '/admin' || hash === '#/admin' || hash === '#admin';
 }
 
 export default function App() {
@@ -62,8 +64,10 @@ export default function App() {
   useEffect(() => {
     const syncRoute = () => setIsAdminRoute(isAdminLocation());
     window.addEventListener('popstate', syncRoute);
+    window.addEventListener('hashchange', syncRoute);
     return () => {
       window.removeEventListener('popstate', syncRoute);
+      window.removeEventListener('hashchange', syncRoute);
     };
   }, []);
 
@@ -122,18 +126,11 @@ export default function App() {
       <div className="min-h-screen bg-[#FAF7FC] dark:bg-[#0B0710] text-[#1A1222] dark:text-[#F6F2F8]">
         <AdminPanel
           data={portfolio.data}
-          loading={portfolio.loading}
-          saving={portfolio.saving}
-          apiError={portfolio.apiError}
-          clearApiError={portfolio.clearApiError}
-          onRefreshPortfolio={portfolio.refresh}
-          onCreateProject={portfolio.createProject}
-          onUpdateProject={portfolio.updateProject}
-          onDeleteProject={portfolio.deleteProject}
-          onReorderProjects={portfolio.reorderProjects}
-          onToggleFeatured={portfolio.toggleFeatured}
-          onSaveSiteMedia={portfolio.saveSiteMedia}
-          onImportPortfolio={portfolio.importPortfolioJson}
+          hasDraft={portfolio.hasDraft}
+          storageError={portfolio.storageError}
+          clearStorageError={portfolio.clearStorageError}
+          updateDraft={portfolio.updateDraft}
+          discardDraft={portfolio.discardDraft}
           onExitAdmin={() => {
             const homePath = window.location.pathname.replace(/\/admin\/?$/, '') || '/';
             window.history.pushState({}, '', `${homePath}${window.location.search}`);

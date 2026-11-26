@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowDownRight, MapPin, Play, Sparkles } from 'lucide-react';
 import MagneticButton from './MagneticButton';
 import { useReducedMotion } from '../hooks/useReducedMotion';
-import { resolveMediaUrl } from '../api/client';
 
 const TITLES = ['AI Visual Artist', 'AI Filmmaker', 'AI Video Editor'];
 
@@ -12,12 +11,9 @@ export default function Hero({ profilePhoto, showreelUrl, onNavigate }) {
   const [titleIndex, setTitleIndex] = useState(0);
   const [photoError, setPhotoError] = useState(false);
 
-  const resolvedProfilePhoto = resolveMediaUrl(profilePhoto);
-  const resolvedShowreelUrl = resolveMediaUrl(showreelUrl);
-
   useEffect(() => {
     setPhotoError(false);
-  }, [resolvedProfilePhoto]);
+  }, [profilePhoto]);
 
   useEffect(() => {
     if (reducedMotion) return;
@@ -28,7 +24,7 @@ export default function Hero({ profilePhoto, showreelUrl, onNavigate }) {
   }, [reducedMotion]);
 
   const isDirectVideo =
-    resolvedShowreelUrl && /\.(mp4|webm|mov)(\?.*)?$/i.test(resolvedShowreelUrl.trim());
+    showreelUrl && /\.(mp4|webm|mov)(\?.*)?$/i.test(showreelUrl.trim());
 
   return (
     <section
@@ -39,7 +35,7 @@ export default function Hero({ profilePhoto, showreelUrl, onNavigate }) {
       {isDirectVideo && !reducedMotion && (
         <video
           className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
-          src={resolvedShowreelUrl}
+          src={showreelUrl}
           autoPlay
           loop
           muted
@@ -140,9 +136,9 @@ export default function Hero({ profilePhoto, showreelUrl, onNavigate }) {
               <span className="absolute -bottom-1.5 -right-1.5 w-5 h-5 border-b-2 border-r-2 border-[#F5B85B] rounded-br" aria-hidden="true" />
 
               <div className="relative w-full h-full rounded-xl overflow-hidden bg-gradient-to-br from-[#1C0D24] via-[#7A1248] to-[#0B0710] flex items-center justify-center">
-                {resolvedProfilePhoto && !photoError ? (
+                {profilePhoto && !photoError ? (
                   <img
-                    src={resolvedProfilePhoto}
+                    src={profilePhoto}
                     alt="Faiz Siddiqui — AI Visual Artist"
                     className="w-full h-full object-cover"
                     onError={() => setPhotoError(true)}

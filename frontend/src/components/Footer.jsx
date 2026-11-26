@@ -31,7 +31,7 @@ export default function Footer({ onBackToTop }) {
             WhatsApp
           </a>
           <a
-            href="/admin"
+            href="#/admin"
             className="px-3 py-2 min-h-[44px] inline-flex items-center gap-1.5 text-[#544960] dark:text-[#B8AEBF] hover:text-[#F5B85B] transition-colors"
           >
             <Lock className="w-3.5 h-3.5" aria-hidden="true" />

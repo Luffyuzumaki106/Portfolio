@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ExternalLink, Play, X } from 'lucide-react';
 import { parseVideoUrl } from '../utils/videoEmbed';
-import { resolveMediaUrl } from '../api/client';
+import { isGoogleDriveLink } from '../utils/googleDrive';
 
 export default function ProjectModal({ project, projects, onClose, onSelectProject }) {
   const [playVideo, setPlayVideo] = useState(false);
+  const [posterError, setPosterError] = useState(false);
 
   useEffect(() => {
     setPlayVideo(false);
+    setPosterError(false);
   }, [project?.id]);
 
   useEffect(() => {
@@ -26,6 +28,17 @@ export default function ProjectModal({ project, projects, onClose, onSelectProje
   const prevProject = currentIndex > 0 ? projects[currentIndex - 1] : projects[projects.length - 1];
   const nextProject = currentIndex < projects.length - 1 ? projects[currentIndex + 1] : projects[0];
   const videoInfo = parseVideoUrl(project.videoLink);
+  const posterImage = !posterError
+    ? project.bannerImage || videoInfo?.thumbnailUrl || ''
+    : '';
+
+  const externalLabel = project.externalLink
+    ? isGoogleDriveLink(project.externalLink)
+      ? 'Open on Google Drive'
+      : parseVideoUrl(project.externalLink)?.provider === 'YouTube'
+        ? 'Watch on YouTube'
+        : 'Open External Link'
+    : '';
 
   return (
     <AnimatePresence>
@@ -95,10 +108,11 @@ export default function ProjectModal({ project, projects, onClose, onSelectProje
               )
             ) : (
               <>
-                {project.bannerImage ? (
+                {posterImage ? (
                   <img
-                    src={resolveMediaUrl(project.bannerImage)}
+                    src={posterImage}
                     alt={project.title}
+                    onError={() => setPosterError(true)}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -149,33 +163,37 @@ export default function ProjectModal({ project, projects, onClose, onSelectProje
               {project.title}
             </h3>
 
-            <p className="mt-3 text-sm sm:text-base text-[#4A3F55] dark:text-[#B8AEBF] leading-relaxed">
-              {project.shortDescription}
-            </p>
+            {project.shortDescription && (
+              <p className="mt-3 text-sm sm:text-base text-[#4A3F55] dark:text-[#B8AEBF] leading-relaxed">
+                {project.shortDescription}
+              </p>
+            )}
 
             {/* Metadata grid */}
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-black/5 dark:bg-white/5">
-              {project.role && (
-                <div>
-                  <span className="block font-mono text-xs uppercase text-[#7A1248] dark:text-[#F5B85B]">
-                    Role
-                  </span>
-                  <span className="text-sm font-medium text-[#1A1222] dark:text-[#F6F2F8]">
-                    {project.role}
-                  </span>
-                </div>
-              )}
-              {project.client && (
-                <div>
-                  <span className="block font-mono text-xs uppercase text-[#7A1248] dark:text-[#F5B85B]">
-                    Client
-                  </span>
-                  <span className="text-sm font-medium text-[#1A1222] dark:text-[#F6F2F8]">
-                    {project.client}
-                  </span>
-                </div>
-              )}
-            </div>
+            {(project.role || project.client) && (
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-black/5 dark:bg-white/5">
+                {project.role && (
+                  <div>
+                    <span className="block font-mono text-xs uppercase text-[#7A1248] dark:text-[#F5B85B]">
+                      Role
+                    </span>
+                    <span className="text-sm font-medium text-[#1A1222] dark:text-[#F6F2F8]">
+                      {project.role}
+                    </span>
+                  </div>
+                )}
+                {project.client && (
+                  <div>
+                    <span className="block font-mono text-xs uppercase text-[#7A1248] dark:text-[#F5B85B]">
+                      Client
+                    </span>
+                    <span className="text-sm font-medium text-[#1A1222] dark:text-[#F6F2F8]">
+                      {project.client}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Tools */}
             {project.toolsUsed?.length > 0 && (
@@ -228,7 +246,7 @@ export default function ProjectModal({ project, projects, onClose, onSelectProje
                   rel="noreferrer"
                   className="px-5 min-h-[44px] rounded-full bg-[#E0447C] text-white text-sm font-semibold inline-flex items-center gap-2 hover:opacity-90"
                 >
-                  <span>Open External Link</span>
+                  <span>{externalLabel}</span>
                   <ExternalLink className="w-4 h-4" />
                 </a>
               )}

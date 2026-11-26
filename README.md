@@ -1,45 +1,23 @@
-# Faiz Siddiqui Portfolio — Two-Tier Architecture
+# Faiz Siddiqui Portfolio
 
-This project is structured as a **two-tier web application**:
+Static portfolio website built with React 18, Vite, Tailwind CSS, Framer Motion, and GSAP.
 
-- **`frontend/` (Tier 1 — Presentation Tier)**: React 18, Vite, Tailwind CSS, Framer Motion, and GSAP UI. Communicates with the backend over `/api/*` and `/uploads/*` (proxied to `http://localhost:5000` in development, or configurable via `VITE_API_BASE_URL`).
-- **`backend/` (Tier 2 — Application & Data Tier)**: Node.js + Express REST API backed by SQLite (`node:sqlite`), server-side salted `scrypt` authentication with `HttpOnly` session cookies, multipart image uploads (`backend/uploads/`), and contact inquiry storage.
+## Structure
 
-## Project Structure
+- `frontend/` — Static React + Vite application
+- `frontend/src/data/projects.json` — Portfolio projects and site media links
+- `frontend/dist/` — Production static build output
 
-```text
-faiz-siddiqui-portfolio/
-├── package.json            # Root orchestrator scripts (dev, build, test)
-├── scripts/dev.mjs         # Runs frontend & backend tiers concurrently
-├── frontend/               # React + Vite presentation tier
-│   ├── src/api/client.js   # Fetch API client & media URL resolver
-│   ├── src/hooks/          # usePortfolioData (backend-synced)
-│   └── src/components/     # Public showcase, Contact form, & Admin CMS
-└── backend/                # Express + SQLite backend tier
-    ├── src/config/env.js   # Port, CORS, DB, upload & session config
-    ├── src/db/database.js  # SQLite schema & first-boot seeding
-    ├── src/middleware/     # Cookie session auth & Multer image upload
-    ├── src/routes/         # auth, portfolio, projects, uploads, contact, health
-    └── tests/api.test.js   # End-to-end API integration test suite
+## Commands
+
+Run from the repository root (or inside `frontend/`):
+
+```bash
+npm run dev      # Start local Vite dev server
+npm run build    # Build static site into frontend/dist
+npm run preview  # Preview the production static build locally
 ```
 
-## Quick Start
+## Deployment
 
-1. Install dependencies (if not already installed):
-   ```bash
-   npm run install:all
-   ```
-2. Run both tiers in development (`frontend` on `:5173`, `backend` on `:5000`):
-   ```bash
-   npm run dev
-   ```
-3. Build the frontend and verify backend API tests:
-   ```bash
-   npm run build
-   npm run test:backend
-   ```
-
-## Production Deployment Options
-
-- **Split Deployment**: Deploy `frontend/dist` to a static host (Vercel/Netlify/CDN) with `VITE_API_BASE_URL` pointing to your backend server, and run `npm start` inside `backend/` with `CORS_ORIGIN` set to the frontend origin.
-- **Single-Origin Backend Serving**: Build the frontend (`npm run build`) and run `SERVE_FRONTEND=true npm start` inside `backend/` so Express serves both `/api` and the built SPA.
+Deploy `frontend/dist` (or configure your static host with build command `npm --prefix frontend run build` and output directory `frontend/dist`) to Vercel, Netlify, Cloudflare Pages, or GitHub Pages.
