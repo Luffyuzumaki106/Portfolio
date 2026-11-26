@@ -1,0 +1,73 @@
+{
+  "siteMedia": {
+    "profilePhoto": "",
+    "showreelUrl": "",
+    "featuredVideoUrl": ""
+  },
+  "projects": [
+    {
+      "id": "happy-tots-3d-rhymes",
+      "title": "Happy Tots 3D Rhymes",
+      "category": "3D Cartoon",
+      "shortDescription": "AI-generated 3D cartoon nursery rhymes created for the Happy Tots network (Happy Tots Hindi, Happy Tots, Happy Tots Nursery Rhymes), including the 145k-view hit \"Aha Tamatar Bade Maze Daar\".",
+      "role": "AI Junior Artist",
+      "client": "Prismart / Happy Tots Network",
+      "toolsUsed": ["Seedance 2.5", "Kling", "Nano Banana", "After Effects", "Premiere Pro"],
+      "date": "2026",
+      "videoLink": "",
+      "driveLink": "",
+      "externalLink": "",
+      "bannerImage": "",
+      "bannerGradient": "linear-gradient(135deg, #7A1248 0%, #E0447C 52%, #F5B85B 100%)",
+      "featured": true
+    },
+    {
+      "id": "mahabharat",
+      "title": "Mahabharat",
+      "category": "Mythology",
+      "shortDescription": "AI video production for an Indian mythology client project, blending dramatic lighting, consistent character framing, and cinematic pacing.",
+      "role": "AI Junior Artist",
+      "client": "Prismart Client Project",
+      "toolsUsed": ["Seedance 2.5", "MiniMax Hailuo", "Omni Flash", "Premiere Pro", "Photoshop"],
+      "date": "2026",
+      "videoLink": "",
+      "driveLink": "",
+      "externalLink": "",
+      "bannerImage": "",
+      "bannerGradient": "linear-gradient(135deg, #1E0B24 0%, #7A1248 55%, #F5B85B 100%)",
+      "featured": true
+    },
+    {
+      "id": "ram-setu",
+      "title": "Ram Setu",
+      "category": "Mythology",
+      "shortDescription": "Indian mythology AI visual storytelling project crafted with high-detail environment generation, atmospheric compositing, and editorial rhythm.",
+      "role": "AI Junior Artist",
+      "client": "Prismart Client Project",
+      "toolsUsed": ["Kling", "MiniMax Hailuo", "After Effects", "Photoshop"],
+      "date": "2026",
+      "videoLink": "",
+      "driveLink": "",
+      "externalLink": "",
+      "bannerImage": "",
+      "bannerGradient": "linear-gradient(135deg, #0B0710 0%, #4E1248 50%, #E0447C 100%)",
+      "featured": false
+    },
+    {
+      "id": "alpha-bride-pocket-fm",
+      "title": "Alpha Bride (Pocket FM)",
+      "category": "Story Series",
+      "shortDescription": "Turned narrative scripts into realistic AI video on an urgent client contract for Pocket FM's story-driven series.",
+      "role": "AI Artist",
+      "client": "Pocket FM",
+      "toolsUsed": ["Seedance 2.5", "Kling", "ChatGPT", "Premiere Pro", "Wondershare Filmora"],
+      "date": "2026",
+      "videoLink": "",
+      "driveLink": "",
+      "externalLink": "",
+      "bannerImage": "",
+      "bannerGradient": "linear-gradient(135deg, #2B0922 0%, #9E1957 55%, #F5B85B 100%)",
+      "featured": true
+    }
+  ]
+}
